@@ -1,5 +1,5 @@
 var numbers = [],
-    photoes = [],
+    photos = [],
     comments_text = [
         'Всё отлично!',
         'В целом всё неплохо. Но не всё.',
@@ -25,13 +25,15 @@ var numbers = [],
 for( var i = 0; i < 25; i++) {    
     random_num = Math.floor(Math.random()*186) + 15;
     comments_rand_num = Math.floor(Math.random()*2) + 1;
+
     for( var j = 0; j < comments_rand_num; j++ ) {
         comment_rand_index = Math.floor(Math.random()*comments_text.length);
         comments_rand_text[j] = comments_text[comment_rand_index];
     }
+    
     description_rand_num = Math.floor(Math.random()*description_text.length) ;
     
-    photoes[i] = {
+    photos[i] = {
         url: `../photos/${i}.jpg`,
         likes: random_num,
         comments: comments_rand_text,
@@ -39,4 +41,4 @@ for( var i = 0; i < 25; i++) {
     }
 
  }
- console.log(photoes)
+ console.log(photos)
