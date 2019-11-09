@@ -74,6 +74,8 @@ function renderPhotoData() {
     }
 
     bigPicture.querySelector('.social__caption').textContent = firstPhoto.description;
+    document.querySelector('.social__comment-count').classList.add('visually-hidden');
+    document.querySelector('.social__loadmore').classList.add('visually-hidden');
 }
  
 
