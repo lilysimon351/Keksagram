@@ -77,8 +77,44 @@ function renderPhotoData() {
     document.querySelector('.social__comment-count').classList.add('visually-hidden');
     document.querySelector('.social__loadmore').classList.add('visually-hidden');
 }
- 
 
-initCommentsData();
-renderPhotoData();
-renderUserItems();
+// new
+
+var preview = document.querySelector('.img-upload__preview > img');
+const defaultSrc = preview.src;
+
+var uploader = document.querySelector('#upload-file');
+uploader.addEventListener('change', openPreview);
+
+function openPreview() {
+    document.querySelector('.img-upload__overlay').classList.remove('hidden');
+    let selectedFile = this.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(selectedFile);
+    reader.onload = url(preview);
+
+    document.addEventListener('keydown', onPreviewEscPress);
+} 
+
+var closePreview = document.querySelector('#upload-cancel');
+closePreview.addEventListener('click', closeImgPreview);
+
+function closeImgPreview() {
+    document.querySelector('.img-upload__overlay').classList.add('hidden');
+    preview.src = defaultSrc;
+    
+    document.removeEventListener('keydown', onPreviewEscPress);
+}
+
+function onPreviewEscPress(e) {
+    if(e.key === 'Escape') {
+        closeImgPreview();
+    }
+}
+
+function url(img) {
+    return function(e) {
+        img.src = e.target.result;
+    } 
+}
+
