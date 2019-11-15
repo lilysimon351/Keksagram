@@ -80,6 +80,9 @@ function renderPhotoData() {
 
 // new
 
+
+// Предварительный просмотр загруженного изображения и и закрытие окна пред.просмотра
+
 var preview = document.querySelector('.img-upload__preview > img');
 const defaultSrc = preview.src;
 
@@ -91,7 +94,9 @@ function openPreview() {
     let selectedFile = this.files[0];
     const reader = new FileReader();
     reader.readAsDataURL(selectedFile);
-    reader.onload = url(preview);
+    reader.onload = function() {
+        preview.src = reader.result;
+    };
 
     document.addEventListener('keydown', onPreviewEscPress);
 } 
@@ -102,6 +107,8 @@ closePreview.addEventListener('click', closeImgPreview);
 function closeImgPreview() {
     document.querySelector('.img-upload__overlay').classList.add('hidden');
     preview.src = defaultSrc;
+    onZoomValueChange(100);
+    preview.className  = '';
     
     document.removeEventListener('keydown', onPreviewEscPress);
 }
@@ -112,9 +119,69 @@ function onPreviewEscPress(e) {
     }
 }
 
-function url(img) {
-    return function(e) {
-        img.src = e.target.result;
-    } 
+// Изменение масштаба изображения
+
+var zoomOut = document.querySelector('.resize__control--minus');
+var zoomIn = document.querySelector('.resize__control--plus');
+var zoomValueInput = document.querySelector('.resize__control--value');
+var zoomValue = 100;
+
+zoomOut.addEventListener('click', onZoomOut);
+zoomIn.addEventListener('click', onZoomIn);
+
+function onZoomOut() {
+    if(zoomValue > 25) {
+        zoomValue-= 25;
+        onZoomValueChange(zoomValue);
+    }
 }
 
+function onZoomIn() {
+    if(zoomValue < 100) {
+        zoomValue+= 25;
+        onZoomValueChange(zoomValue);
+    }
+}
+
+function onZoomValueChange(zoomVal) {
+    zoomValueInput.value = zoomVal + '%';
+    preview.style.transform = 'scale('+ zoomVal/100 +')';
+} 
+
+// Наложение эффекта на изображение
+
+var effects = document.querySelectorAll('.effects__radio');
+effects.forEach( function (elem){
+    elem.addEventListener('change', function () {
+        let effectName = this.value
+        changeEffect(effectName);
+        if(effectName === 'none') {
+            document.querySelector('.img-upload__scale').classList.add('hidden');
+        } else {
+            document.querySelector('.img-upload__scale').classList.remove('hidden');
+        }
+    });
+});
+
+
+function changeEffect(effect) {
+    switch (effect) {
+        case 'chrome':
+            preview.classList.add('effects__preview--chrome');
+            break;
+        case 'sepia':
+            preview.classList.add('effects__preview--sepia');
+            break;
+        case 'marvin':
+            preview.classList.add('effects__preview--marvin');
+            break;
+        case 'phobos':
+            preview.classList.add('effects__preview--phobos');
+            break;
+        case 'heat':
+            preview.classList.add('effects__preview--heat');
+            break;
+        default: 
+            preview.className  = '';
+    }
+}
