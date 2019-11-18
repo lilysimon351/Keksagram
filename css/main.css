@@ -757,6 +757,7 @@ main {
   position: absolute;
   top: 50%;
   left: 100%;
+  z-index: 1;
 
   width: 18px;
   height: 18px;

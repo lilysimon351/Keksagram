@@ -136,14 +136,14 @@ zoomIn.addEventListener('click', onZoomIn);
 
 function onZoomOut() {
     if(zoomValue > 25) {
-        zoomValue-= 25;
+        zoomValue -= 25;
         onZoomValueChange(zoomValue);
     }
 }
 
 function onZoomIn() {
     if(zoomValue < 100) {
-        zoomValue+= 25;
+        zoomValue += 25;
         onZoomValueChange(zoomValue);
     }
 }
@@ -172,30 +172,31 @@ effectsCont.addEventListener("click", function(event) {
   });
 
 function changeEffect(effect) {
+    let result = '';
+
     switch (effect) {
         case 'chrome':
-            preview.className  = '';
-            preview.classList.add('effects__preview--chrome');
+            result = 'effects__preview--chrome';
             break;
         case 'sepia':
-            preview.className  = '';
-            preview.classList.add('effects__preview--sepia');
+            result = 'effects__preview--sepia';
             break;
         case 'marvin':
-            preview.className  = '';
-            preview.classList.add('effects__preview--marvin');
+            result = 'effects__preview--marvin';
             break;
         case 'phobos':
-            preview.className  = '';
-            preview.classList.add('effects__preview--phobos');
+            result = 'effects__preview--phobos';
             break;
         case 'heat':
-            preview.className  = '';
-            preview.classList.add('effects__preview--heat');
+            result = 'effects__preview--heat';
             break;
         case 'none':
             preview.className  = '';
+            return;
     }
+
+    preview.className  = '';
+    preview.classList.add(result);
 }
 
 // Изменение контрастности эффекта на изображение
@@ -212,7 +213,9 @@ function onSpinMousedown() {
     
     function onSpinMousemove(moveEvt) {
         var coordsX = moveEvt.clientX;
-        var spinLeft = Math.floor( (100*(coordsX+18 - spinLineWidth ))/spinLineWidth );
+        var spinLineLeft = document.querySelector('.scale__line').getBoundingClientRect().left;
+
+        var spinLeft = Math.floor(((coordsX - spinLineLeft) / spinLineWidth) * 100);
 
         if(spinLeft < 0) {
             spinLeft = 0;
@@ -224,18 +227,16 @@ function onSpinMousedown() {
     }
     
     function onSpinMouseup() {
-
         spinScale.removeEventListener('mousemove', onSpinMousemove);
         spinScale.removeEventListener('mouseup', onSpinMouseup);
-
     }
 }
 
 function changeEffectContrast(effect, unit) {
     switch (effect) {
         case 'chrome':
-            preview.style.filter = 'grayscale('+unit/100+')';
-            preview.style.WebkitFilter = 'grayscale('+unit/100+')';
+            preview.style.filter = `grayscale(${unit/100})`;
+            preview.style.WebkitFilter = `grayscale(${unit/100})`;
             break;
         case 'sepia':
             preview.style.filter = 'sepia('+unit/100+')';
