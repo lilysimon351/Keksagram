@@ -109,7 +109,12 @@ function closeImgPreview() {
     preview.src = defaultSrc;
     onZoomValueChange(100);
     preview.className  = '';
+    uploader.value = '';
+
+    resetValues('none', 100);
     
+    document.querySelector('.img-upload__scale').classList.add('hidden');
+
     document.removeEventListener('keydown', onPreviewEscPress);
 }
 
@@ -150,38 +155,114 @@ function onZoomValueChange(zoomVal) {
 
 // Наложение эффекта на изображение
 
-var effects = document.querySelectorAll('.effects__radio');
-effects.forEach( function (elem){
-    elem.addEventListener('change', function () {
-        let effectName = this.value
-        changeEffect(effectName);
+var effectName = '';
+var effectsCont = document.querySelector('.effects__list');
+
+effectsCont.addEventListener("click", function(event) {
+    if (event.target.nodeName == "INPUT") {
+        effectName = event.target.value;
+        resetValues(effectName, 100);
+
         if(effectName === 'none') {
             document.querySelector('.img-upload__scale').classList.add('hidden');
         } else {
             document.querySelector('.img-upload__scale').classList.remove('hidden');
         }
-    });
-});
-
+    }
+  });
 
 function changeEffect(effect) {
     switch (effect) {
         case 'chrome':
+            preview.className  = '';
             preview.classList.add('effects__preview--chrome');
             break;
         case 'sepia':
+            preview.className  = '';
             preview.classList.add('effects__preview--sepia');
             break;
         case 'marvin':
+            preview.className  = '';
             preview.classList.add('effects__preview--marvin');
             break;
         case 'phobos':
+            preview.className  = '';
             preview.classList.add('effects__preview--phobos');
             break;
         case 'heat':
+            preview.className  = '';
             preview.classList.add('effects__preview--heat');
             break;
-        default: 
+        case 'none':
             preview.className  = '';
     }
+}
+
+// Изменение контрастности эффекта на изображение
+
+var spin = document.querySelector('.scale__pin');
+spin.addEventListener('mousedown', onSpinMousedown);
+
+function onSpinMousedown() {
+    var spinLineWidth = document.querySelector('.scale__line').clientWidth;
+    var spinScale = document.querySelector('.img-upload__scale');
+    
+    spinScale.addEventListener('mousemove', onSpinMousemove);
+    spinScale.addEventListener('mouseup', onSpinMouseup);
+    
+    function onSpinMousemove(moveEvt) {
+        var coordsX = moveEvt.clientX;
+        var spinLeft = Math.floor( (100*(coordsX+18 - spinLineWidth ))/spinLineWidth );
+
+        if(spinLeft < 0) {
+            spinLeft = 0;
+        } else if(spinLeft > 100) {
+            spinLeft = 100;
+        }
+        
+        resetValues(effectName, spinLeft);
+    }
+    
+    function onSpinMouseup() {
+
+        spinScale.removeEventListener('mousemove', onSpinMousemove);
+        spinScale.removeEventListener('mouseup', onSpinMouseup);
+
+    }
+}
+
+function changeEffectContrast(effect, unit) {
+    switch (effect) {
+        case 'chrome':
+            preview.style.filter = 'grayscale('+unit/100+')';
+            preview.style.WebkitFilter = 'grayscale('+unit/100+')';
+            break;
+        case 'sepia':
+            preview.style.filter = 'sepia('+unit/100+')';
+            preview.style.WebkitFilter = 'sepia('+unit/100+')';
+            break;
+        case 'marvin':
+            preview.style.filter = 'invert('+unit+'%)';
+            preview.style.WebkitFilter = 'invert('+unit+'%)';
+            break;
+        case 'phobos':
+            preview.style.filter = 'blur('+(unit/100)*3+')';
+            preview.style.WebkitFilter = 'blur('+(unit/100)*3+'px)';
+            break;
+        case 'heat':
+            preview.style.filter = 'brightness('+((unit/100)*2+1)+')';
+            preview.style.WebkitFilter = 'brightness('+((unit/100)*2+1)+')';
+            break;
+        case 'none':
+            preview.style.filter = 'none';
+            preview.style.WebkitFilter = 'none';
+    }
+}
+
+function resetValues(effectName, unit) {
+    changeEffect(effectName);
+    changeEffectContrast(effectName, unit);
+
+    document.querySelector('.scale__value').value = unit;
+    spin.style.left = unit + '%';
 }
