@@ -24,6 +24,10 @@ closePreview.addEventListener('click', closeImgPreview);
 function closeImgPreview() {
     document.querySelector('.img-upload__overlay').classList.add('hidden');
     document.querySelector('.img-upload__scale').classList.add('hidden');
+
+    description.style.borderColor = 'initial';
+    hashtags.style.borderColor = 'initial';
+    
     preview.src = defaultSrc;
     preview.className  = '';
     uploader.value = '';

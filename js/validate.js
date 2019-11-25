@@ -6,12 +6,14 @@ var hashtags = document.querySelector('.text__hashtags');
 
 submit.addEventListener('click', onFormSubmit);
 
-function onFormSubmit() {
+function onFormSubmit(e) {
     //comments
     if (description.value.length > 140) {
         description.setCustomValidity("Длина комментария не может составлять больше 140 символов");
+        description.style.borderColor = 'red'; 
     } else {
         description.setCustomValidity("");
+        description.style.borderColor = 'initial'; 
     }
 
     // hashtags
@@ -89,8 +91,14 @@ function onFormSubmit() {
             for(var key in errors){
                 hashtags.setCustomValidity(errors[key]);
             }
+            hashtags.style.borderColor = 'red'; 
         } else {
             hashtags.setCustomValidity('');
+            hashtags.style.borderColor = 'initial'; 
+            if (description.value.length <= 140) {
+                sendForm();
+            }
+            e.preventDefault();
         }
     }
 }
