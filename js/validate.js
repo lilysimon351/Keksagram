@@ -1,5 +1,4 @@
 // form validation
-
 var submit = document.querySelector('#upload-submit');
 var description = document.querySelector('.text__description');
 var hashtags = document.querySelector('.text__hashtags');
@@ -17,7 +16,6 @@ function onFormSubmit(e) {
     }
 
     // hashtags
-
     if(hashtags !== "") {
         let errors = {};
         let hashtagsArr = hashtags.value.split(" ");
@@ -39,20 +37,17 @@ function onFormSubmit(e) {
             }
         });
 
-        // check '#' existence
-        
+        // check '#' existence        
         if(hashtagError > 0) {
             errors.hashtagError = 'Хештэг должен начинаться с символа "#"';
         }
         
-        // check hashtag minlength
-        
+        // check hashtag minlength        
         if(minLengthError > 0) {
             errors.minLengthError = 'Хеш-тег не может состоять только из одной решётки';
         }
         
         // check hashtag repetition in lowercase
-
         let hashtagsArrLowerCase = hashtagsArr.map( currVal => currVal.toLowerCase() );        
 
         let repeatTagErrorLowercase = hashtagsArr.every(function(value, index) {
@@ -63,8 +58,7 @@ function onFormSubmit(e) {
             errors.repeatTagErrorLowercase = '#ХэшТег и #хэштег считаются одним и тем же тегом';
         }
 
-        // check hashtag repetition
-        
+        // check hashtag repetition        
         let repeatTagError = hashtagsArr.every(function(value, index) {
             return hashtagsArr.lastIndexOf(value) === index;
         });
@@ -73,14 +67,12 @@ function onFormSubmit(e) {
             errors.repeatTagError = 'Один и тот же хэш-тег не может быть использован дважды';
         } 
         
-        // check hashtags' amount
-        
+        // check hashtags' amount        
         if(hashtagsArr.length > 5) {
             errors.maxAmount = 'Максимальное количество хештэгов 5';
         } 
         
-        // check hashtag maxlength
-        
+        // check hashtag maxlength        
         if(maxLengthError > 0) {
             errors.hashtagMaxLength = 'Максимальная длина одного хэш-тега 20 символов, включая решётку';
         }

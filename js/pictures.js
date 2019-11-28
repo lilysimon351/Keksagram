@@ -1,5 +1,4 @@
-// Image preview: open/close preview window 
-
+// Image preview: open/close preview window
 var preview = document.querySelector('.img-upload__preview > img');
 const defaultSrc = preview.src;
 
@@ -42,7 +41,7 @@ function closeImgPreview() {
 
 function onPreviewEscPress(e) {
     
-    if (hashtags === document.activeElement || hashtags === description.activeElement) {
+    if (hashtags === document.activeElement || description === document.activeElement) {
         return e;
     } else if(e.key === 'Escape') { 
         closeImgPreview();
@@ -50,7 +49,6 @@ function onPreviewEscPress(e) {
 }
 
 // Zooming
-
 var zoomOut = document.querySelector('.resize__control--minus');
 var zoomIn = document.querySelector('.resize__control--plus');
 var zoomValueInput = document.querySelector('.resize__control--value');
@@ -79,7 +77,6 @@ function onZoomValueChange(zoomVal) {
 } 
 
 // Applying an effect to an image
-
 var effectName = '';
 var effectsCont = document.querySelector('.effects__list');
 
@@ -125,7 +122,6 @@ function changeEffect(effect) {
 }
 
 // Change the contrast of the effect on the image
-
 var spin = document.querySelector('.scale__pin');
 spin.addEventListener('mousedown', onSpinMousedown);
 

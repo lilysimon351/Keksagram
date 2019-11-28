@@ -5,8 +5,7 @@ function sendForm() {
 
     let request = new XMLHttpRequest();
     let url = 'https://js.dump.academy/kekstagram';
-
-    request.responseType = 'json';
+    
     request.addEventListener('loadend', function () {
         if(request.status === 200) {
             closeImgPreview();

@@ -30,7 +30,7 @@
         <div class="img-upload__wrapper">
           <h2 class="img-upload__title visually-hidden">Загрузка фотографии</h2>
 
-          <form action="https://js.dump.academy/kekstagram" class="img-upload__form" id="upload-select-image" method="post" enctype="multipart/form-data" autocomplete="off">
+          <form class="img-upload__form" id="upload-select-image" method="post" enctype="multipart/form-data" autocomplete="off">
 
             <fieldset class="img-upload__start">
               <input type="file" id="upload-file" class="img-upload__input visually-hidden" name="filename" required>
@@ -136,7 +136,7 @@
             <p class="social__caption">Тестим новую камеру! =)</p>
             <p class="social__likes">Нравится <span class="likes-count">356</span></p>
           </div>
-          <div class="social__comment-count">5 из <span class="comments-count">125</span> комментариев</div>
+          <div class="social__comment-count"> <span class="social__comment-loaded">5</span>  из <span class="comments-count">125</span> комментариев</div>
           <ul class="social__comments">
 
           </ul>
@@ -208,6 +208,8 @@
       <p class="social__text"></p>
     </li>
   </template>
+  <script src="js/renderImages.js"></script>
+  <script src="js/imageFilter.js"></script>
   <script src="js/pictures.js"></script>
   <script src="js/validate.js"></script>
   <script src="js/send.js"></script>
