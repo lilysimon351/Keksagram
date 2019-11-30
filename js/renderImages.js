@@ -1,25 +1,16 @@
 var photos = '';
 function getImages() {
-    let xhr = new XMLHttpRequest();
-    let url = 'https://js.dump.academy/kekstagram/data'; 
-    xhr.responseType = 'json';
-
-    xhr.addEventListener('loadend', function () {
-        if( xhr.status === 200 ) {
+    api.fetch({
+        url: 'https://js.dump.academy/kekstagram/data', 
+        success: (xhr) => {
             photos = xhr.response;
             renderImages(photos.length);
             document.querySelector('.img-filters').classList.remove('img-filters--inactive');
-        } else {
-            alert(`Ошибка: ${xhr.status}`);
+        },
+        error: (xhr) => {
+            alert(`Произошла ошибка во время отправки: ${xhr.status}`);
         }
     });
-    
-    xhr.addEventListener('error', function () {
-        alert(`Произошла ошибка во время отправки: ${xhr.status}`);
-    });
-    
-    xhr.open('GET', url);
-    xhr.send(); 
 }
 
 function renderImages(length) {
@@ -36,7 +27,7 @@ function renderImages(length) {
         photoContainer.append(pageTitle);
     }
     
-    for(var i = 0; i < length; i++){
+    for(var i = 0; i < length; i++) {
         var elem = template.cloneNode(true);
         var currElem = elem.children[0];
  
@@ -54,8 +45,10 @@ document.addEventListener('click', openImageData);
 
 function openImageData(e) {
     let elem = e.target;
+
     if(e.target.nodeName === 'IMG') {
         var list = document.querySelectorAll('.picture__img');
+
         for(var i = 0; i < list.length; i++){
             if(list[i] == elem){                
                 renderPhotoData(i);
@@ -65,7 +58,6 @@ function openImageData(e) {
         
         document.querySelector('body').classList.add('modal-open');
         document.querySelector('.big-picture').classList.remove('hidden');
-
         document.addEventListener('keydown', onImagePopupEscPress);
     }
 } 
@@ -87,6 +79,7 @@ function onImagePopupEscPress(e) {
         imagePopupClose();
     }
 }
+
 var loadMore = document.querySelector('.social__loadmore');
 var count = 5;
 
@@ -104,7 +97,7 @@ function renderPhotoData(i) {
     renderComments(img.comments, 5);
 
     loadMore.addEventListener('click', function () {
-        count+=5;
+        count += 5;
         renderComments(img.comments, count);    
     });
 }
@@ -122,7 +115,7 @@ function renderComments(comments, length) {
 
     document.querySelector('.social__comment-loaded').textContent = length;
 
-    for(var l = 0; l < length; l++){
+    for(var l = 0; l < length; l++) {
         let elem = template.cloneNode(true);
         var currElem = elem.children[0];
 
